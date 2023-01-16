@@ -6,7 +6,7 @@
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 09:23:28 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/15 14:47:46 by aelbrahm         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:52:07 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void    arg_check(char *str)
     ft_putstr_fd(str, 2);
     exit(EXIT_FAILURE);
 }
+
 void    here_doc(char *av, t_pipex *pipex, int *sid)
 {
     char    *str_doc;
@@ -35,6 +36,8 @@ void    here_doc(char *av, t_pipex *pipex, int *sid)
 
     hr_doc = open(".heredoc", O_CREAT | O_RDWR, 0644);
     pipex->infile = open("input", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (hr_doc < 0 || pipex->infile < 0)
+        err(FD);
     *sid = 2;
     dup2(pipex->infile, hr_doc);
     write(1, "pipe heredoc> ", 15);

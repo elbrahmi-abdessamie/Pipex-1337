@@ -6,7 +6,7 @@
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 09:37:52 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/15 14:35:43 by aelbrahm         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:42:57 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int main(int ac, char **av, char **env)
                 arg_check(HDC);
             here_doc(av[2], &pipex, &iter);
             pipex.infile = open("input", O_RDWR);
-            dup2(pipex.infile, STDIN_FILENO);
         }        
         pipex.ab_path = get_path(env);
         if (iter == 1)
@@ -35,9 +34,8 @@ int main(int ac, char **av, char **env)
         dup2(pipex.infile, STDIN_FILENO);
         while (++iter < ac - 2)
             child(&pipex, env, *(av + iter));
-        // system("leaks pipex");
         dup2(pipex.outfile, STDOUT_FILENO);
         command(*(av + ac - 2), env, &pipex);
     }
-    return 1;
+    err(MCMD);
 }

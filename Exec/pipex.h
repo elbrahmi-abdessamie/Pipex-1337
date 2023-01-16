@@ -6,11 +6,11 @@
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 09:23:50 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/14 17:38:59 by aelbrahm         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:50:25 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
+# ifndef PIPEX_H
 #define PIPEX_H
 
 # include <unistd.h>
@@ -28,6 +28,11 @@
 #define HDC     "\x1B[31mSyntax Error: ./pipex here_doc limitter cmd1...cmdn file"
 #define PERR    "\x1B[31mError: FAILURE IN PIPE"
 #define FERR    "\x1B[31mError: FAILURE WHILE FORKING"
+#define DIR1     "\e[3m\x1B[31mError: Do not shit with my shit=> no such file of directory\n"
+#define DIR2     "\e[3m\x1B[31mError: No such file of directory\n"
+#define FD     "\e[3m\x1B[31mError: Couldn't open the file!\n"
+#define MCMD     "\e[3m\x1B[31mSyntax Error: ./pipex file1 cmd1 cmd2 file2\n"
+
 typedef struct s_pipex
 {
     int     fd[2];
@@ -53,13 +58,14 @@ void    err(char *str);
 
 /// @brief retrieves the PATH from env variables
 /// @param env 
-/// @return 
+/// @return The splited PATHS env's variable
 char    **get_path(char **env);
 /// @brief Checks the valide cmd path
 /// @param path 
 /// @param cmd 
-/// @return 
+/// @return The command path or NULL
 char    *cmd_path(char **path, char *cmd);
+int     cmd_check(char *cmd);
 //------------------------------------------------------------------------------------
 
 // => here_doc
@@ -86,7 +92,7 @@ void    child(t_pipex *pipex, char **env, char *av);
 /// @param env 
 /// @param pipex 
 /// @param sid 
-void command(char *av, char **env, t_pipex *pipex);
+void    command(char *av, char **env, t_pipex *pipex);
 //------------------------------------------------------------------------------------
 
 #endif

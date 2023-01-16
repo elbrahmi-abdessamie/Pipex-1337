@@ -6,7 +6,7 @@
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 09:35:20 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/14 17:24:06 by aelbrahm         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:37:29 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void    execution(char **env, t_pipex *pipe_st)
 
 void    child(t_pipex *pipex, char **env, char *av)
 {
+    if (pipex->infile < 0 || pipex->outfile < 0)
+        err(FD);
     if (pipe(pipex->fd) < 0)
         err(PERR);
     if (!*av)
@@ -59,6 +61,10 @@ void command(char *av, char **env, t_pipex *pipex)
     if (!*av)
         arg_err(KRED, pipex);
     pipex->cmd_arg = ft_split(av, ' ');
+    // if (cmd_check(pipex->cmd_arg[0]) == 1)
+    //         err(DIR2);
+    // if (cmd_check(pipex->cmd_arg[0]) >= 2)
+    //     err(DIR1);
     pipex->cmd_path = cmd_path(pipex->ab_path, pipex->cmd_arg[0]);
     if (!pipex->cmd_path)
         cmd_path_err(pipex->cmd_arg[0]);
