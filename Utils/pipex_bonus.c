@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 19:49:07 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/19 00:03:53 by aelbrahm         ###   ########.fr       */
+/*   Created: 2023/01/14 09:37:52 by aelbrahm          #+#    #+#             */
+/*   Updated: 2023/01/23 21:10:57 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,30 @@ int	main(int ac, char **av, char **env)
 	t_pipex	pipex;
 	int		iter;
 
-	iter = 2;
-	if (ac == 5)
+	iter = 1;
+	if (ac >= 5)
 	{
+		if (ft_strcmp(av[1], "here_doc") == 0)
+		{
+			if (ac <= 5)
+				err(HDC);
+			here_doc(av[2], &pipex, &iter);
+			pipex.infile = open("input", O_RDWR);
+		}
 		pipex.ab_path = get_path(env);
-		pipex.infile = open(*(av + 1), O_RDWR, 0664);
+		if (iter == 1)
+			pipex.infile = open(*(av + 1), O_RDWR, 0664);
 		dup2(pipex.infile, STDIN_FILENO);
-		pipex.outfile = open(*(av + ac - 1),
+		if (iter == 1)
+            pipex.outfile = open(*(av + ac - 1),
 				O_CREAT | O_WRONLY | O_TRUNC, 0664);
-		child(&pipex, env, *(av + iter));
+        else
+            pipex.outfile = open(*(av + ac - 1),
+				O_CREAT | O_WRONLY | O_APPEND, 0664);
+		while (++iter < ac - 2)
+			child(&pipex, env, *(av + iter));
 		dup2(pipex.outfile, STDOUT_FILENO);
 		command(*(av + ac - 2), env, &pipex);
 	}
-	err(MCMD);
+	err(HDC);
 }

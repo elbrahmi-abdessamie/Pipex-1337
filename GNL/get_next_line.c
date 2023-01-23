@@ -6,7 +6,7 @@
 /*   By: aelbrahm <aelbrahm@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 21:01:58 by aelbrahm          #+#    #+#             */
-/*   Updated: 2023/01/14 14:27:37 by aelbrahm         ###   ########.fr       */
+/*   Updated: 2023/01/16 22:28:26 by aelbrahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ static char	*read_file(int input_fd, char *res)
 		nread = read(input_fd, buffer, BUFFER_SIZE);
 		if (nread < 0)
 		{
-            if (res)
-			    free(res);
+			if (res)
+				free(res);
 			return (free(buffer), NULL);
 		}
-        if(nread == 0)
-            break;
+		if (nread == 0)
+			break ;
 		buffer[nread] = 0;
 		res = ft_strjoin_bst(res, buffer);
 	}
@@ -70,8 +70,8 @@ static char	*r_line(char *buffer, int *ct_ln)
 	char	*r_buffer;
 
 	*ct_ln = 0;
-    if (!buffer)
-        return NULL;
+	if (!buffer)
+		return (NULL);
 	if (!*buffer)
 		return (NULL);
 	r_buffer = ft_memchr(buffer, 0xA, ft_strlen(buffer));
